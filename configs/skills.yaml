@@ -1,0 +1,24 @@
+enabled: []        # empty = all registered skills enabled
+overrides: {}      # e.g. { open_app: { risk: confirm } }  (risk can be raised, never lowered)
+
+file_search:
+  default_root: "~"
+  max_results: 50
+  exclude_dirs: [".git", "node_modules", "__pycache__", "AppData", "$Recycle.Bin"]
+
+open_app:
+  aliases:           # only these apps can be launched
+    notepad: notepad.exe
+    calculator: calc.exe
+    explorer: explorer.exe
+    paint: mspaint.exe
+
+clipboard_read:
+  max_chars: 2000
+
+list_processes:
+  max_results: 100
+
+write_file:
+  allowed_roots: ["~/Documents/AEGIS"]   # writes anywhere else are refused
+  max_bytes: 1000000

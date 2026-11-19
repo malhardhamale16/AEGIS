@@ -1,0 +1,40 @@
+audio:
+  input_device: 1          # explicit device index, never auto-selected
+  host_api: MME            # MME | WASAPI | DirectSound | WDM-KS (no automatic switching)
+  mode: callback
+  sample_rate: 16000
+  channels: 1
+  frame_ms: 30             # must be 10, 20 or 30 for WebRTC VAD
+  queue_max_frames: 200    # bounded queue between callback and consumer
+
+vad:
+  aggressiveness: 2        # 0-3
+  start_frames: 5
+  end_silence_ms: 700
+  max_utterance_seconds: 30
+  pre_roll_ms: 300         # keep audio from just before speech was detected
+  min_utterance_ms: 250    # drop shorter blips (clicks, coughs)
+
+stt:
+  engine: faster-whisper
+  model: base              # name (from model_dir/cache) or a local model directory
+  language: en
+  device: cpu
+  compute_type: int8
+  beam_size: 1
+  local_files_only: true   # never download at runtime; model must already be on disk
+  model_dir: null          # null = default Hugging Face cache
+
+tts:
+  engine: kokoro
+  voice: af_heart
+  lang_code: a             # a = American English, b = British English
+  repo_id: hexgrad/Kokoro-82M
+  speed: 1.0
+  output_device: null      # null = system default
+  offline: true            # HF_HUB_OFFLINE=1: Kokoro never fetches anything at runtime
+  block_ms: 20             # playback chunk size; also how fast playback can be cancelled
+
+barge_in:
+  enabled: true            # keep listening while speaking; talking over AEGIS stops it
+  min_speech_ms: 300       # sustained speech needed to interrupt (use headphones to avoid echo)

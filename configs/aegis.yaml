@@ -1,0 +1,22 @@
+app:
+  name: AEGIS
+  data_dir: data
+
+logging:
+  level: INFO
+  console: true
+  file: logs/aegis.log   # set to null to disable file logging
+
+safety:
+  dry_run: true               # state-changing skills only simulate unless this is false
+  require_confirmation: true  # "confirm"-level skills always ask the user
+
+agents:
+  planner:
+    max_steps: 5
+    max_retries: 1            # re-ask the LLM once if its plan is invalid
+  executor:
+    stop_on_failure: true
+  conversation:
+    max_history: 20
+    summary_max_chars: 4000

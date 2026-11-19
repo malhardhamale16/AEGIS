@@ -1,0 +1,14 @@
+ollama:
+  base_url: http://127.0.0.1:11434
+  timeout_seconds: 60
+  health_timeout_seconds: 3
+
+# Model names per role. Nothing is downloaded automatically.
+roles:
+  planner: llama3.1:8b
+  executor: llama3.1:8b
+  conversation: llama3.1:8b
+
+generation:
+  temperature: 0.2
+  max_tokens: 1024
