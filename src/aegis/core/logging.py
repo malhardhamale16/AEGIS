@@ -21,14 +21,15 @@ def setup_logging(config: LoggingConfig, base_dir: Path | None = None) -> loggin
         logger.removeHandler(handler)
         handler.close()
 
-    logger.setLevel(config.level)
     logger.propagate = False
+    levels: list[int] = []
 
     if config.console:
         # stderr, so logs never mix with command output on stdout
-        logger.addHandler(
-            RichHandler(console=Console(stderr=True), show_path=False, rich_tracebacks=True)
-        )
+        console = RichHandler(console=Console(stderr=True), show_path=False, rich_tracebacks=True)
+        console.setLevel(config.console_level)
+        logger.addHandler(console)
+        levels.append(console.level)
 
     if config.file is not None:
         path = (
@@ -37,7 +38,12 @@ def setup_logging(config: LoggingConfig, base_dir: Path | None = None) -> loggin
         path.parent.mkdir(parents=True, exist_ok=True)
         file_handler = logging.FileHandler(path, encoding="utf-8")
         file_handler.setFormatter(logging.Formatter(_FILE_FORMAT))
+        file_handler.setLevel(config.level)
         logger.addHandler(file_handler)
+        levels.append(file_handler.level)
+
+    # The logger passes everything any handler wants; each handler filters for itself.
+    logger.setLevel(min(levels) if levels else config.level)
 
     if not logger.handlers:
         logger.addHandler(logging.NullHandler())

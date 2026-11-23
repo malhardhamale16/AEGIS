@@ -29,10 +29,11 @@ py -3.12 -m venv $env:USERPROFILE\venvs\aegis
 pip install -e ".[dev]"
 ```
 
-Pull the model named in `configs/models.yaml` (default `llama3.1:8b`) and check everything:
+Pull the model named in `configs/models.yaml` (default `llama3.2:3b`, ~2 GB; bigger models
+such as `llama3.1:8b` plan better but need more RAM/VRAM) and check everything:
 
 ```powershell
-ollama pull llama3.1:8b
+ollama pull llama3.2:3b
 aegis doctor
 ```
 

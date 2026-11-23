@@ -24,6 +24,11 @@ Turn the user's request into a plan of skill calls.
 
 Rules:
 - Use only the skills listed below, with arguments that match their schema exactly.
+- Plan only what the user explicitly asked for. Do not add verification, follow-up or
+  "extra information" steps they did not request. Most requests need exactly ONE step:
+  "is notepad running?" is one process lookup, nothing else.
+- Leave optional arguments out unless the user asked for them. Never set a flag such as
+  "overwrite" to true unless the user said so.
 - Use as few steps as possible, at most {max_steps}.
 - Steps run in order. A step cannot use the output of an earlier step.
 - If the request needs no skill (a question, small talk), return an empty "steps" list and

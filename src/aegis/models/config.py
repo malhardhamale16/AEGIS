@@ -25,9 +25,13 @@ class AppConfig(_Strict):
     data_dir: Path = Path("data")
 
 
+LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+
+
 class LoggingConfig(_Strict):
-    level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"
+    level: LogLevel = "INFO"  # log file level
     console: bool = True
+    console_level: LogLevel = "WARNING"  # terminal level; keeps command output clean
     file: Path | None = Path("logs/aegis.log")
 
 
@@ -84,9 +88,9 @@ class OllamaConfig(_Strict):
 
 
 class ModelRoles(_Strict):
-    planner: str = "llama3.1:8b"
-    executor: str = "llama3.1:8b"
-    conversation: str = "llama3.1:8b"
+    planner: str = "llama3.2:3b"
+    executor: str = "llama3.2:3b"
+    conversation: str = "llama3.2:3b"
 
 
 class GenerationConfig(_Strict):

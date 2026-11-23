@@ -27,6 +27,8 @@ def test_system_prompt_lists_skills_with_risk_and_args(make_planner):
     assert "- fake_write [confirm]" in system.content
     assert '"text": {"type": "string"}' in system.content
     assert "at most 5" in system.content
+    assert "Plan only what the user explicitly asked for" in system.content
+    assert "Leave optional arguments out" in system.content
 
 
 def test_disabled_skills_not_in_catalog(registry):

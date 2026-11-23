@@ -1,13 +1,14 @@
 ollama:
   base_url: http://127.0.0.1:11434
-  timeout_seconds: 60
+  timeout_seconds: 120     # first request also loads the model into memory
   health_timeout_seconds: 3
 
-# Model names per role. Nothing is downloaded automatically.
+# Model names per role. Nothing is downloaded automatically (`ollama pull <name>`).
+# llama3.2:3b (~2 GB) fits in 4 GB of VRAM; llama3.1:8b needs ~5 GB+ and much more RAM.
 roles:
-  planner: llama3.1:8b
-  executor: llama3.1:8b
-  conversation: llama3.1:8b
+  planner: llama3.2:3b
+  executor: llama3.2:3b
+  conversation: llama3.2:3b
 
 generation:
   temperature: 0.2

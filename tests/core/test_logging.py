@@ -37,6 +37,20 @@ def test_level_filters_messages(tmp_path):
     assert "quiet" not in content
 
 
+def test_console_level_is_separate_from_file_level(tmp_path, capsys):
+    cfg = LoggingConfig(level="INFO", console=True, console_level="WARNING", file=Path("c.log"))
+    logger = setup_logging(cfg, base_dir=tmp_path)
+    get_logger("unit").info("decision recorded")
+    get_logger("unit").warning("something odd")
+    _flush(logger)
+    stderr = capsys.readouterr().err
+    content = (tmp_path / "c.log").read_text(encoding="utf-8")
+    assert "decision recorded" in content and "something odd" in content
+    assert "something odd" in stderr
+    assert "decision recorded" not in stderr
+    assert logger.level == logging.INFO
+
+
 def test_repeated_setup_does_not_duplicate_handlers(tmp_path):
     cfg = LoggingConfig(console=False, file=Path("b.log"))
     setup_logging(cfg, base_dir=tmp_path)

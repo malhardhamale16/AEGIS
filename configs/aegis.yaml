@@ -3,9 +3,10 @@ app:
   data_dir: data
 
 logging:
-  level: INFO
+  level: INFO              # log file level (every permission decision is recorded there)
   console: true
-  file: logs/aegis.log   # set to null to disable file logging
+  console_level: WARNING   # terminal level; set to INFO to see decisions live
+  file: logs/aegis.log     # set to null to disable file logging
 
 safety:
   dry_run: true               # state-changing skills only simulate unless this is false

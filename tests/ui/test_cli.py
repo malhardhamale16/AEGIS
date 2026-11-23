@@ -19,7 +19,7 @@ def plan(*steps, response=None):
 
 
 class FakeOllama(FakeLLM):
-    def __init__(self, responses=(), *, healthy=True, models=("llama3.1:8b",)):
+    def __init__(self, responses=(), *, healthy=True, models=("llama3.2:3b",)):
         super().__init__(responses)
         self.healthy = healthy
         self.models = list(models)
@@ -215,4 +215,4 @@ def test_doctor_missing_model_fails(cli):
     result, _ = cli(["doctor", "--json"], FakeOllama(models=[]))
     assert result.exit_code == 1
     checks = {c["name"]: c for c in json.loads(result.output)}
-    assert "ollama pull llama3.1:8b" in checks["model:planner"]["detail"]
+    assert "ollama pull llama3.2:3b" in checks["model:planner"]["detail"]
