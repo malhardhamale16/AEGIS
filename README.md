@@ -16,7 +16,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the design and diagrams.
 
 - Windows 10/11, Python 3.11+
 - [Ollama](https://ollama.com) running locally, with a chat model pulled
-- For voice: a microphone; headphones recommended if you use barge-in
+- For voice: a microphone; headphones if you turn on barge-in
 
 ## Setup
 
@@ -137,7 +137,8 @@ docs/       ARCHITECTURE.md
 ## Limitations
 
 - Plan steps can't use an earlier step's output yet.
-- No acoustic echo cancellation: with speakers, AEGIS can interrupt itself. Use headphones
-  or set `barge_in.enabled: false`.
+- No acoustic echo cancellation, so barge-in (talking over AEGIS to stop it) is off by
+  default: with speakers, AEGIS would interrupt itself. With headphones, turn it on with
+  `barge_in.enabled: true` in `configs/voice.yaml`.
 - Confirmations happen at the terminal (`y/N`), not by voice.
 - Kokoro on CPU is about real-time or slower; replies start after the first sentence.

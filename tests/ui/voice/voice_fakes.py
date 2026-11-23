@@ -187,9 +187,11 @@ class FakeTTS:
 class FakePlayback:
     """Plays 'forever' until cancelled, unless finish_immediately."""
 
-    def __init__(self, finish_immediately=False):
+    def __init__(self, finish_immediately=False, linger_after_cancel=False):
         self._playing = not finish_immediately
+        self.linger_after_cancel = linger_after_cancel  # like the real thread winding down
         self.cancelled = False
+        self.cancel_calls = 0
         self.error = None
         self.waited = False
 
@@ -198,8 +200,10 @@ class FakePlayback:
         return self._playing
 
     def cancel(self):
+        self.cancel_calls += 1
         self.cancelled = True
-        self._playing = False
+        if not self.linger_after_cancel:
+            self._playing = False
 
     def wait(self, timeout=None):
         self.waited = True
@@ -208,13 +212,14 @@ class FakePlayback:
 
 
 class FakePlayer:
-    def __init__(self, finish_immediately=False):
+    def __init__(self, finish_immediately=False, linger_after_cancel=False):
         self.finish_immediately = finish_immediately
+        self.linger_after_cancel = linger_after_cancel
         self.handles = []
         self.chunks = []
 
     def play(self, chunks):
         self.chunks.append(list(chunks))
-        handle = FakePlayback(self.finish_immediately)
+        handle = FakePlayback(self.finish_immediately, self.linger_after_cancel)
         self.handles.append(handle)
         return handle

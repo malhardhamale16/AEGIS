@@ -82,7 +82,10 @@ class VoiceSession:
     # ------------------------------------------------------------------ barge-in
 
     def _on_frame(self, is_speech: bool) -> None:
-        if not (self.barge_in.enabled and self.speaking):
+        # A cancelled playback stays "playing" until its thread winds down; ignore it then,
+        # so one interruption is handled (and reported) exactly once.
+        playback = self._playback
+        if not (self.barge_in.enabled and self.speaking) or (playback and playback.cancelled):
             self._speech_run = 0
             return
         self._speech_run = self._speech_run + 1 if is_speech else 0

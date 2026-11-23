@@ -200,9 +200,10 @@ class TtsConfig(_Strict):
 
 
 class BargeInConfig(_Strict):
-    # true: keep listening while speaking; sustained speech stops playback.
-    # false: half-duplex; mic input during playback is discarded (no echo problems).
-    enabled: bool = True
+    # true: keep listening while speaking; sustained speech stops playback (headphones only:
+    #   there is no echo cancellation, so speakers would let AEGIS interrupt itself).
+    # false (default): half-duplex; mic input during playback is discarded.
+    enabled: bool = False
     min_speech_ms: int = Field(300, gt=0)
 
 

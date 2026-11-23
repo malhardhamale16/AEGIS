@@ -76,6 +76,18 @@ def test_sustained_speech_during_playback_barges_in():
     assert ("you", "second") in events  # the interrupting speech became the next turn
 
 
+def test_barge_in_fires_once_while_cancelled_playback_winds_down():
+    # Regression: the real playback thread keeps "playing" briefly after cancel(); continued
+    # speech used to re-trigger barge-in on every frame ("interrupted" printed dozens of times).
+    s, events, _ = session(
+        "sss.." + "s" * 30 + "..", ["first", "second"], player=FakePlayer(linger_after_cancel=True)
+    )
+    s.run()
+    assert s.stats.barge_ins == 1
+    assert events.count(("status", "interrupted")) == 1
+    assert s.player.handles[0].cancel_calls >= 1
+
+
 def test_short_blip_during_playback_does_not_barge_in():
     # 2 speech frames < 3 needed (90 ms) -> no interruption; blip still opens a short turn
     s, _, _ = session("sss.." + "ss.", ["first", "blip"], min_speech_ms=90)

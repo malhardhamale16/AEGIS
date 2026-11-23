@@ -36,5 +36,8 @@ tts:
   block_ms: 20             # playback chunk size; also how fast playback can be cancelled
 
 barge_in:
-  enabled: true            # keep listening while speaking; talking over AEGIS stops it
-  min_speech_ms: 300       # sustained speech needed to interrupt (use headphones to avoid echo)
+  # false (default): AEGIS finishes speaking, then listens again; what the mic heard meanwhile
+  #   is discarded, so its own voice from the speakers can't interrupt it.
+  # true: talking over AEGIS stops it. Only with HEADPHONES (there is no echo cancellation).
+  enabled: false
+  min_speech_ms: 300       # sustained speech needed to interrupt

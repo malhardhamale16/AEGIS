@@ -156,9 +156,13 @@ flowchart LR
   `scripts/fetch_voice_models.py`.
 - **Playback** pulls audio chunks from Kokoro inside the playback thread, so speech starts
   after the first chunk, and cancelling also stops further synthesis.
-- **Barge-in** (`barge_in.enabled`): while AEGIS speaks, `min_speech_ms` of continuous
-  speech cancels playback, and that speech becomes the next turn. With barge-in off, the
-  session is half-duplex: it waits for playback, then discards what the mic heard (no echo).
+- **Barge-in** (`barge_in.enabled`, off by default): while AEGIS speaks, `min_speech_ms` of
+  continuous speech cancels playback (once per reply), and that speech becomes the next
+  turn. There is no echo cancellation, so this needs headphones. With barge-in off (the
+  default) the session is half-duplex: it waits for playback, then discards what the mic
+  heard, so AEGIS can't hear and interrupt itself.
+- **Offline.** `huggingface_hub` reads `HF_HUB_OFFLINE` only when first imported, so
+  `ui/voice/offline.py` sets it (and the already-loaded constant) before Whisper or Kokoro load.
 
 ## Events
 

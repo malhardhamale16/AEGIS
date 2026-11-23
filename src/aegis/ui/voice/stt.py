@@ -8,6 +8,7 @@ from typing import Any, Protocol
 
 from aegis.core.logging import get_logger
 from aegis.models.config import SttConfig
+from aegis.ui.voice.offline import force_hf_offline
 from aegis.ui.voice.turn import Utterance
 
 log = get_logger("voice.stt")
@@ -44,6 +45,8 @@ class FasterWhisperSTT:
 
     @staticmethod
     def _load(config: SttConfig) -> Any:
+        if config.local_files_only:
+            force_hf_offline()  # before faster_whisper imports huggingface_hub
         try:
             from faster_whisper import WhisperModel
         except ImportError as exc:

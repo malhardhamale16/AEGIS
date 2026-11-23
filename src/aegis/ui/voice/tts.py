@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 import re
 from array import array
 from collections.abc import Iterator
@@ -11,6 +10,7 @@ from typing import Any, Protocol
 
 from aegis.core.logging import get_logger
 from aegis.models.config import TtsConfig
+from aegis.ui.voice.offline import force_hf_offline
 
 log = get_logger("voice.tts")
 
@@ -61,7 +61,7 @@ class KokoroTTS:
     @staticmethod
     def _load(config: TtsConfig) -> Any:
         if config.offline:
-            os.environ["HF_HUB_OFFLINE"] = "1"
+            force_hf_offline()
         try:
             from kokoro import KPipeline
         except ImportError as exc:
