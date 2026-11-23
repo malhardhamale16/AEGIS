@@ -13,7 +13,7 @@ from aegis.core.permission import PermissionGate
 from aegis.core.registry import SkillRegistry
 from aegis.models.config import Settings
 from aegis.models.permission import ConfirmFn
-from aegis.skills import register_builtin_skills
+from aegis.skills import machine_context, register_builtin_skills
 
 
 @dataclass
@@ -50,7 +50,9 @@ def build_runtime(
     llm = llm or OllamaClient(settings.models.ollama, settings.models.generation)
     roles = settings.models.roles
     agents = settings.aegis.agents
-    planner = PlannerAgent(llm, registry, roles.planner, agents.planner)
+    planner = PlannerAgent(
+        llm, registry, roles.planner, agents.planner, context=machine_context(settings.skills)
+    )
     executor = ExecutorAgent(gate, agents.executor, bus=bus)
     conversation = ConversationAgent(
         llm, planner, executor, roles.conversation, agents.conversation

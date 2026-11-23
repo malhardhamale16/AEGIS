@@ -23,7 +23,7 @@ flowchart TB
         CONV["ConversationAgent  history · summary"]
     end
     subgraph SKILLS["skills/  (single-purpose actions)"]
-        SK["system_info · file_search · clipboard_read · open_app<br/>web_open · list_processes · write_file"]
+        SK["system_info · file_search · clipboard_read · open_app · open_path<br/>web_open · list_processes · write_file"]
     end
     subgraph CORE["core/  (services)"]
         CFG["config loader"]

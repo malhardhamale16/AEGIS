@@ -39,7 +39,7 @@ Rules:
 
 Reply with JSON only, in this shape:
 {{"steps": [{{"skill": "<name>", "args": {{...}}, "reason": "<why>"}}], "response": null}}
-
+{context}
 Skills:
 {catalog}
 """
@@ -72,15 +72,24 @@ class PlannerAgent:
         registry: SkillRegistry,
         model: str,
         settings: PlannerSettings | None = None,
+        *,
+        context: Sequence[str] = (),
     ) -> None:
         self._llm = llm
         self._registry = registry
         self._model = model
         self._settings = settings or PlannerSettings()
+        # Facts about this machine (real folder paths, launchable apps) so the model doesn't
+        # have to guess them. Supplied by the app layer; agents never look at the OS.
+        self._context = list(context)
 
     def system_prompt(self) -> str:
+        context = ""
+        if self._context:
+            context = "\nThis PC:\n" + "\n".join(f"- {line}" for line in self._context) + "\n"
         return SYSTEM_PROMPT.format(
             max_steps=self._settings.max_steps,
+            context=context,
             catalog=format_catalog(self._registry.describe()),
         )
 

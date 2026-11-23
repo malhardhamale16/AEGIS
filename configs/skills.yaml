@@ -7,11 +7,22 @@ file_search:
   exclude_dirs: [".git", "node_modules", "__pycache__", "AppData", "$Recycle.Bin"]
 
 open_app:
-  aliases:           # only these apps can be launched
+  aliases:           # only these apps can be launched (names are matched case-insensitively)
     notepad: notepad.exe
     calculator: calc.exe
     explorer: explorer.exe
+    file explorer: explorer.exe
     paint: mspaint.exe
+    chrome: chrome.exe
+    google chrome: chrome.exe
+    edge: msedge.exe
+    brave: brave.exe
+    word: winword.exe
+    excel: excel.exe
+    powerpoint: powerpnt.exe
+    vlc: vlc.exe
+    settings: "ms-settings:"
+    task manager: taskmgr.exe
 
 clipboard_read:
   max_chars: 2000

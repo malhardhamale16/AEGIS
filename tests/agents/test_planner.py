@@ -31,6 +31,20 @@ def test_system_prompt_lists_skills_with_risk_and_args(make_planner):
     assert "Leave optional arguments out" in system.content
 
 
+def test_machine_context_is_in_prompt(registry, fake_llm_factory):
+    llm = fake_llm_factory([plan_json()])
+    context = ["Home folder: C:\\Users\\Legion", "Known folders: Downloads = C:\\X"]
+    PlannerAgent(llm, registry, "m", context=context).plan("x")
+    system = llm.calls[0]["messages"][0].content
+    assert "This PC:\n- Home folder: C:\\Users\\Legion\n- Known folders" in system
+
+
+def test_no_context_section_without_context(make_planner):
+    planner, llm = make_planner([plan_json()])
+    planner.plan("x")
+    assert "This PC:" not in llm.calls[0]["messages"][0].content
+
+
 def test_disabled_skills_not_in_catalog(registry):
     assert "danger" in format_catalog(registry.describe())
     assert format_catalog([]) == "(no skills available)"

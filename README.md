@@ -76,10 +76,11 @@ Without an install, `python -m aegis ...` works from the project folder with
 | Skill | Risk | Does |
 |---|---|---|
 | `system_info` | safe | OS, hostname, CPU, memory, Python version |
-| `file_search` | safe | find files by name pattern under a folder |
+| `file_search` | safe | find files by name under a folder ("pdf files in my downloads") |
 | `clipboard_read` | safe | read clipboard text (length-capped) |
 | `list_processes` | safe | running processes, optional name filter |
-| `open_app` | safe | launch an app **from the allow-list** in `skills.yaml` |
+| `open_app` | safe | launch an app **from the allow-list** in `skills.yaml` (Chrome, Edge, Word, VLC...) |
+| `open_path` | safe | open a folder or a document; **refuses programs and scripts** |
 | `web_open` | safe | open an `http(s)` URL in the default browser |
 | `write_file` | confirm | write a text file **inside `write_file.allowed_roots` only** |
 

@@ -93,7 +93,7 @@ def test_skills_list_json(cli):
     result, _ = cli(["skills", "list", "--json"])
     data = json.loads(result.output)
     assert {d["name"]: d["risk"] for d in data}["write_file"] == "confirm"
-    assert len(data) == 7
+    assert len(data) == 8
 
 
 def test_skills_show(cli):

@@ -13,6 +13,7 @@ EXPECTED = {
     "file_search": RiskLevel.SAFE,
     "list_processes": RiskLevel.SAFE,
     "open_app": RiskLevel.SAFE,
+    "open_path": RiskLevel.SAFE,
     "system_info": RiskLevel.SAFE,
     "web_open": RiskLevel.SAFE,
     "write_file": RiskLevel.CONFIRM,

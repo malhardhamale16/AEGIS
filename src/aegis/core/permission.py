@@ -25,7 +25,7 @@ from aegis.models.permission import (
     PermissionDecision,
     Verdict,
 )
-from aegis.models.skill import RiskLevel
+from aegis.models.skill import RiskLevel, SkillError
 
 log = get_logger("permission")
 
@@ -130,7 +130,10 @@ class PermissionGate:
         try:
             output = self._registry.execute(name, args, dry_run=decision.dry_run)
         except Exception as exc:
-            log.exception("skill %s failed", name)
+            if isinstance(exc, SkillError):  # expected (bad path, unknown app): one log line
+                log.info("skill %s refused: %s", name, exc)
+            else:  # a bug: keep the traceback
+                log.exception("skill %s failed", name)
             return ExecutionResult(
                 skill=name, args=args, decision=decision, error=f"{type(exc).__name__}: {exc}"
             )
